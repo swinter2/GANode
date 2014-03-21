@@ -229,6 +229,16 @@ body {
                 background-color: $lightblue;
                 color: $black;
             }
+
+            &[disabled] {
+                border: 1px solid $midgray;
+                background-color: $lightgray;
+                color: $midgray;
+
+                &:hover {
+                    border: 1px solid $midgray;
+                }
+            }
         }
     }
 

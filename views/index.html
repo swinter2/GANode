@@ -64,8 +64,9 @@
                             <label>End Date: </label>
                             <input id="endDate" class="datepicker" type="text" data-value="{{ endDate }}"/>
                         </p>
+                        <p class="error" ng-show="startDateObj() > endDateObj()">Start date cannot be greater than the end date.</p>
                         <p>
-                            <button id="fetchResults" ng-click="fetchResults()">Fetch Results</button>
+                            <button id="fetchResults" ng-click="fetchResults()" ng-disabled="!gaView || !trackingCode || !account || (startDateObj() > endDateObj())">Fetch Results</button>
                         </p>
                     </fieldset>
                 </div>
@@ -75,12 +76,14 @@
                 </div>
                 <div id="information">
                     <p class="info" ng-show="info" ng-bind="info"></p>
+                    <img ng-show="loading" ng-src="/static/styles/images/loading.gif" title="Loading" alt="Loading" />
                 </div>
 
-                <div id="results" ng-show="results && results.rows.length > 0">
+                <div id="results">
                     <div class="table-results">
                         <h3>Results</h3>
-                        <table class="data">
+                        <p ng-show="!results">No results found.</p>
+                        <table ng-show="results && results.rows" class="data">
                             <thead>
                                 <tr>
                                     <th ng-repeat="header in results.columnHeaders">{{ header.name }}</th>
@@ -99,7 +102,7 @@
                     
                     <div class="raw-results">
                         <h3>Raw Results Object</h3>
-                        <textarea readonly>{{ results }}</textarea>
+                        <textarea readonly>{{ results || "No Data" }}</textarea>
                     </div>
                 </div>
             </div>
