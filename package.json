@@ -1,0 +1,14 @@
+{
+  "name": "ganode",
+  "version": "0.0.0",
+  "description": "GA test running on node",
+  "main": "server.js",
+  "dependencies": {
+    "express": "3.x",
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sam Winter",
+  "license": "ISC"
+}

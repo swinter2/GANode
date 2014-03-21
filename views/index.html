@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html ng-app="gaApp">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title ng-bind='title'></title>
+    
+    <link href="/static/styles/stylesheets/screen.css" rel="stylesheet" />
+    <link href="/static/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+</head>
+    <body>
+        <div class="container">
+            
+            <h1 ng-bind='title'></h1>
+
+            <div id="analyticsController" ng-controller="Analytics" ng-cloak>
+                                
+                <div id="console">
+                    <fieldset>
+                        <legend>Console</legend>
+                    
+                        <textarea readonly ng-bind="output"></textarea>
+
+                    </fieldset>
+                </div> 
+                <div id="form">
+                    <fieldset>
+                        <legend>App Auth</legend>
+                        <p>
+                            <label>Available Analytics Accounts:</label>
+                            <select ng-model="accountId" ng-change="accountChanged()">
+                                <option ng-repeat="acct in accounts" ng-selected="acct.id == accountId" ng-value="acct.id">{{ acct.name }} ({{ acct.id }})</option>
+                            </select>
+                        </p>
+                        <p>
+                            <label>Client ID: </label>
+                            <input type="text" ng-model="clientId"/>
+                        </p>
+                        <p>
+                            <label>API Key: </label>
+                            <input type="text" ng-model="apiKey"/>
+                        </p>
+                        <p ng-show="trackingCodes">
+                            <label>Tracking Code: </label>
+                            <select ng-model="trackingCodeId" ng-change="trackingCodeChanged()">
+                                <option ng-repeat="code in trackingCodes" ng-selected="code.id == trackingCodeId" ng-value="{{ code.id }}">{{ code.name }} ({{ code.id }})</option>
+                            </select>
+                        </p>
+                        <p ng-show="gaViews">
+                            <label>Analytics View: </label>
+                            <select ng-model="gaViewId">
+                                <option ng-repeat="view in gaViews" ng-selected="view.id == gaViewId" ng-value="{{ view.id }}">{{ view.name }} ({{ view.id }})</option>
+                            </select>
+                        </p>
+                        <p>
+                            <label>Start Date: </label>
+                            <input id="startDate" class="datepicker" type="text" data-value="{{ startDate }}"/>
+                            <label>End Date: </label>
+                            <input id="endDate" class="datepicker" type="text" data-value="{{ endDate }}"/>
+                        </p>
+                        <p>
+                            <button id="fetchResults" ng-click="fetchResults()">Fetch Results</button>
+                        </p>
+                    </fieldset>
+                </div>
+                
+                <div id="errors">
+                    <p class="error" ng-show="error" ng-bind="error"></p>
+                </div>
+                <div id="information">
+                    <p class="info" ng-show="info" ng-bind="info"></p>
+                </div>
+
+                <div id="results" ng-show="results && results.rows.length > 0">
+                    <div class="table-results">
+                        <h3>Results</h3>
+                        <table class="data">
+                            <thead>
+                                <tr>
+                                    <th ng-repeat="header in results.columnHeaders">{{ header.name }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in results.rows" ng-init="outerIndex = $index" class="{{ $last ? 'last' : '' }} {{ $even ? 'even' : 'odd' }}">
+                                    <td ng-repeat="header in results.columnHeaders" ng-init="innerIndex = $index; row = results.rows[outerIndex][innerIndex]">
+                                        <span ng-show="header.name === 'ga:date'">{{ row.formatDate() }}</span>
+                                        <span ng-show="header.name !== 'ga:date'">{{ row }}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="raw-results">
+                        <h3>Raw Results Object</h3>
+                        <textarea readonly>{{ results }}</textarea>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    
+        <script src="/static/Scripts/angular.min.js"></script>
+        <script src="/static/Scripts/jquery-2.1.0.min.js"></script>
+        <script src="/static/Scripts/jquery-ui-1.10.4.min.js"></script>
+        <script src="/static/Scripts/analytics/app.js"></script>
+        <script src="/static/Scripts/analytics/controllers/Analytics.js"></script>
+        <script src="https://apis.google.com/js/client.js"></script>
+        <script src="/static/Scripts/analytics/api.js"></script>
+    </body>
+</html>
