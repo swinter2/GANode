@@ -70,6 +70,15 @@ gaApp.controller("Analytics",
         $scope.accounts = null;
         $scope.account = null;
         $scope.accountId = "";
+        $scope.error = "";
+        $scope.info = "";
+        $scope.output = "";
+        $scope.results = null;
+
+        var before = new Date();
+        before.setMonth(before.getMonth()-1);
+        $scope.startDate = before.gaFormat();
+        $scope.endDate = (new Date()).gaFormat();
 
         $scope.accountChanged = function () {
             // Query for tracking codes (web properties) underneath this account.
@@ -111,15 +120,6 @@ gaApp.controller("Analytics",
                 });
             });
         };
-
-        $scope.error = "";
-        $scope.info = "";
-        $scope.output = "";
-        $scope.startDate = startDate;
-        $scope.endDate = endDate;
-
-        $scope.results = null;
-
         $scope.fetchResults = function() {
             $scope.error = "";
             $scope.results = null;
@@ -128,7 +128,7 @@ gaApp.controller("Analytics",
                     if (results && results.items) {
                         $s.results = results;
                     } else {
-                        showInfo("No results found for Profile ID: " + $s.trackingCodeId);
+                        showInfo("No results found for Tracking Code: " + $s.trackingCodeId + ", View: (" + $s.gaView.name + ", " + $s.gaView.id + "), " + "Start Date: " + $s.startDate + " End Date: " + $s.endDate);
                     }
                 });
             });

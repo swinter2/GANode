@@ -1,4 +1,5 @@
 var express = require('express'),
+    fs = require('fs'),
     logfmt = require("logfmt");
 var app = express();
 
