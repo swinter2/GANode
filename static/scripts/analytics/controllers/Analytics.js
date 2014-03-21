@@ -94,13 +94,15 @@ gaApp.controller("Analytics",
                         $s.trackingCodes = results.items;
                         $s.trackingCode = $s.trackingCodes[0];
                         $s.trackingCodeId = $s.trackingCode.id;
+
+                        $scope.trackingCodeChanged();
                     } else {
                         showInfo("No properties found for this account: " + $s.accountId);
                     }
                 });
             });
         };
-        $scope.trackingCodeChanged = function () {
+        $scope.trackingCodeChanged = function (a1, a2, a3, a4) {
             // Query for views underneath this web property.
             console.log('tracking code changed.');
 
@@ -123,12 +125,12 @@ gaApp.controller("Analytics",
         $scope.fetchResults = function() {
             $scope.error = "";
             $scope.results = null;
-            queryCoreReportingApi($scope.trackingCodeId, $scope.startDate, $scope.endDate, function(results) {
+            queryCoreReportingApi($scope.gaViewId, $scope.startDate, $scope.endDate, function(results) {
                 $scope.$apply(function($s) {
-                    if (results && results.items) {
+                    if (results && results.rows) {
                         $s.results = results;
                     } else {
-                        showInfo("No results found for Tracking Code: " + $s.trackingCodeId + ", View: (" + $s.gaView.name + ", " + $s.gaView.id + "), " + "Start Date: " + $s.startDate + " End Date: " + $s.endDate);
+                        showInfo("No results found for Tracking Code: (" + $s.trackingCode.name + ", " + $s.trackingCode.id + "), View: (" + $s.gaView.name + ", " + $s.gaView.id + "), " + "Start Date: " + $s.startDate + " End Date: " + $s.endDate);
                     }
                 });
             });
