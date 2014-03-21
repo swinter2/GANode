@@ -1,18 +1,8 @@
-var express = require('express'),
-    fs = require('fs');
-
+var express = require('express');
 var app = express();
 
-app.use("/static", express.static('static'));
-app.use("/", express.static('views'));
-
-// app.get('/', function (req, res) {
-//     // fs.readFile('./templates/index.html', function (err, data) {
-//     //     if (err) console.log(err);
-//     //     res.end(data);
-//     // });
-//     // res.send("Hi there!");
-// });
+app.use("/static", express.static('./static'));
+app.use("/", express.static('./views'));
 
 app.use(function(req, res, next){
     res.send(404, "Page not found!");
