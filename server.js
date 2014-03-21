@@ -1,5 +1,8 @@
-var express = require('express');
+var express = require('express'),
+    logfmt = require("logfmt");
 var app = express();
+
+app.use(logfmt.requestLogger());
 
 app.use("/static", express.static('./static'));
 app.use("/", express.static('./views'));
@@ -12,7 +15,8 @@ app.use(function (err, req, res, next) {
     res.send(500, "Whoops, there was an error.");
 });
 
-var server = app.listen(8000, function () {
+var port = Number(process.env.PORT || 8000);
+var server = app.listen(port, function () {
     console.log("Listening on port %d", server.address().port);
 });
 
