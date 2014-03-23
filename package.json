@@ -15,7 +15,7 @@
     "url": "https://github.com/swinter2/GANode"
   },
   "author": "Sam Winter",
-  "license": "ISC"
+  "license": "ISC",
   "engines" : {
     "node" : "0.10.x"
   }
