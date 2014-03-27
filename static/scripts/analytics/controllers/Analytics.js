@@ -60,8 +60,8 @@ function showInfo(message) {
 gaApp.controller("Analytics",
     function ($scope) {
         $scope.loading = false;
-        $scope.clientId = "955069224494.apps.googleusercontent.com";
-        $scope.apiKey = "AIzaSyDdU5uKPYj0zX6XGHDQ5RY-O9wS_OM7HDc";
+        $scope.clientId = "";
+        $scope.apiKey = "";
         $scope.gaViewId = "";
         $scope.gaView = null;
         $scope.gaViews = null;
