@@ -4,22 +4,30 @@ var scopes = 'https://www.googleapis.com/auth/analytics.readonly';
 var api = gapi;
 
 // This function is called after the Client Library has finished loading
-var handleClientLoad = function() {
-    // 1. Set the API Key
-    if (!ngScope().apiKey) {
-        showError("API Key not set.");
-        return;
-    }
-    api.client.setApiKey(ngScope().apiKey);
+// var handleClientLoad = function() {
+//     return;
+//     // // 1. Set the API Key
+//     // var $scope = ngScope();
+//     // if (!$scope.apiKey) {
+//     //     showError("API Key not set.");
+//     //     $scope.apply(function ($s) {
+//     //         $s.isAuthenticated = false;
+//     //     });
+//     //     return;
+//     // }
+//     // // api.client.setApiKey(ngScope().apiKey);
 
-    // 2. Call the function that checks if the user is Authenticated. This is defined in the next section
-    window.setTimeout(checkAuth, 1);
-};
+//     // // 2. Call the function that checks if the user is Authenticated. This is defined in the next section
+//     // window.setTimeout(checkAuth, 1);
+// };
 
 function checkAuth() {
-    ngScope().$apply(function ($s) { $s.loading = true; });
+    var $scope = ngScope();
+    $scope.loading = true;
+    // ngScope().$apply(function ($s) { $s.loading = true; });
     // Call the Google Accounts Service to determine the current user's auth status.
     // Pass the response to the handleAuthResult callback function
+    api.client.setApiKey(ngScope().apiKey);
     gapi.auth.authorize({ client_id: ngScope().clientId, scope: scopes, immediate: true }, handleAuthResult);
 }
 
@@ -41,7 +49,7 @@ function loadAnalyticsClient() {
 
 // Authorized user
 function handleAuthorized() {
-    ngScope().$apply(function ($s) { $s.loading = true; });
+    ngScope().$apply(function ($s) { $s.loading = true; $s.isAuthenticated = true; });
     // authorized, so query accounts.
     queryForAccountsWithAction(function(results) {
         if (results && results.items) {
@@ -95,6 +103,7 @@ function handleAuthorized() {
 // Unauthorized user
 function handleUnAuthorized() {
     showError('Unauthorized');
+    ngScope().$apply(function ($s) { $s.loading = true; $s.isAuthenticated = false; });
     gapi.auth.authorize({ client_id: ngScope().clientId, scope: scopes, immediate: false }, handleAuthResult);
 }
 
@@ -102,10 +111,16 @@ var makeApiCall = function (action) {
     var $scope = ngScope();
     if (!$scope.apiKey) {
         showError("API Key not set.");
+        $scope.apply(function ($s) {
+            $s.isAuthenticated = false;
+        });
         return;
     }
     if (!$scope.clientId) {
         showError("Client ID not set.");
+        $scope.apply(function ($s) {
+            $s.isAuthenticated = false;
+        });
         return;
     }
     if (action) {
@@ -162,8 +177,8 @@ function queryCoreReportingApi(profileId, startDate, endDate, action) {
     }).execute(action);
 }
 
-jQuery(function($) {
-    $(window).on("load", function(e) {
-        handleClientLoad();
-    });
-});
+// jQuery(function($) {
+//     $(window).on("load", function(e) {
+//         handleClientLoad();
+//     });
+// });

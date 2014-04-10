@@ -60,6 +60,7 @@ function showInfo(message) {
 gaApp.controller("Analytics",
     function ($scope) {
         $scope.loading = false;
+        $scope.isAuthenticated = false;
         $scope.clientId = "";
         $scope.apiKey = "";
         $scope.gaViewId = "";
@@ -87,6 +88,18 @@ gaApp.controller("Analytics",
         };
         $scope.endDateObj = function () {
             return new Date($scope.endDate.replace(/\-0/i, '-'));
+        };
+
+        $scope.authenticate = function () {
+            if (!$scope.clientId) {
+                showError("Must specify a Client ID.");
+                return;
+            }
+            if (!$scope.apiKey) {
+                showError("Must specify an API Key.");
+                return;
+            }
+            checkAuth();
         };
 
         $scope.accountChanged = function () {

@@ -14,7 +14,7 @@
 
             <div id="analyticsController" ng-controller="Analytics" ng-cloak>
                                 
-                <div id="console">
+                <div id="console" ng-show="isAuthenticated">
                     <fieldset>
                         <legend>Console</legend>
                     
@@ -33,9 +33,12 @@
                             <label>API Key: </label>
                             <input type="text" ng-model="apiKey"/>
                         </p>
+                        <p>
+                            <button ng-click="authenticate()">{{ !isAuthenticated ? "Authenticate" : "Re-Authenticate" }}</button>
+                        </p>
                     </fieldset>
                 </div>
-                <div id="form">
+                <div id="form" ng-show="isAuthenticated">
                     <fieldset>
                         <legend>Options</legend>
                         <p>
@@ -79,7 +82,7 @@
                     <img ng-show="loading" ng-src="/static/styles/images/loading.gif" title="Loading" alt="Loading" />
                 </div>
 
-                <div id="results">
+                <div id="results" ng-show="isAuthenticated">
                     <div class="table-results">
                         <h3>Results</h3>
                         <p ng-show="!results">No results found.</p>
